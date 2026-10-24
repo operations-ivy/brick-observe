@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "brick-observe"
+version = "0.1.0"
+description = "Logs, metrics and traces the same way in every brick homelab service: one init() call"
+authors = ["Patrick White <whitep@alumni.vcu.edu>"]
+license = "Apache-2.0"
+readme = "README.md"
+packages = [{ include = "brick_observe" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+# The core (logs, spans that do nothing without OpenTelemetry) needs only
+# structlog, so host apps on Debian's system Python can use python3-structlog.
+structlog = ">=24.1"
+prometheus-client = { version = ">=0.20", optional = true }
+opentelemetry-api = { version = "^1.30", optional = true }
+opentelemetry-sdk = { version = "^1.30", optional = true }
+opentelemetry-exporter-otlp-proto-grpc = { version = "^1.30", optional = true }
+opentelemetry-instrumentation-flask = { version = ">=0.51b0", optional = true }
+opentelemetry-instrumentation-requests = { version = ">=0.51b0", optional = true }
+flask = { version = ">=3.0", optional = true }
+requests = { version = ">=2.31", optional = true }
+
+[tool.poetry.extras]
+metrics = ["prometheus-client"]
+tracing = ["opentelemetry-api", "opentelemetry-sdk", "opentelemetry-exporter-otlp-proto-grpc"]
+flask = ["flask", "prometheus-client", "opentelemetry-api", "opentelemetry-sdk",
+         "opentelemetry-exporter-otlp-proto-grpc", "opentelemetry-instrumentation-flask"]
+requests = ["requests", "prometheus-client", "opentelemetry-api", "opentelemetry-sdk",
+            "opentelemetry-exporter-otlp-proto-grpc", "opentelemetry-instrumentation-requests"]
+all = ["prometheus-client", "opentelemetry-api", "opentelemetry-sdk", "opentelemetry-exporter-otlp-proto-grpc",
+       "opentelemetry-instrumentation-flask", "opentelemetry-instrumentation-requests", "flask", "requests"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pyyaml = "^6.0"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["poetry-core>=1.9"]
+build-backend = "poetry.core.masonry.api"
