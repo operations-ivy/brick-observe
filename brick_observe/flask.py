@@ -15,6 +15,7 @@ from __future__ import annotations
 import logging
 import time
 
+import flask.cli
 import structlog
 from flask import Flask, Response, g, request
 
@@ -28,6 +29,9 @@ log = structlog.get_logger("brick_observe.http")
 def instrument(app: Flask, *, skip: tuple[str, ...] = SKIP, metrics_path: str | None = "/metrics",
                registry=None) -> Flask:
     m = metrics.http_server(registry)
+    # app.run()'s "Serving Flask app" lines bypass logging, so they'd be the
+    # only lines that aren't JSON.
+    flask.cli.show_server_banner = lambda *args: None
     # Our access line replaces werkzeug's; its warnings and errors still show.
     logging.getLogger("werkzeug").setLevel(logging.WARNING)
     _trace(app, skip)

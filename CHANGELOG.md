@@ -3,6 +3,11 @@
 Semantic versioning: a metric or log field renamed or removed is a major
 version (dashboards and alerts depend on them).
 
+## 0.1.1
+
+- `brick_observe.flask.instrument()` silences Flask's start-up banner, which
+  bypassed logging: now every line a Flask service writes is JSON.
+
 ## 0.1.0
 
 First release (brick-k8s-config#40).

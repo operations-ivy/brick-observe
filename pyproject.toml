@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "brick-observe"
-version = "0.1.0"
+version = "0.1.1"
 description = "Logs, metrics and traces the same way in every brick homelab service: one init() call"
 authors = ["Patrick White <whitep@alumni.vcu.edu>"]
 license = "Apache-2.0"
