@@ -35,7 +35,7 @@ from ._resource import Resource, detect
 from .jobs import Run, job
 from .tracing import span
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __all__ = ["Observer", "Resource", "Run", "get_logger", "init", "instrument_requests", "job", "span"]
 
 

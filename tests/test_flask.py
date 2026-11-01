@@ -85,3 +85,12 @@ def test_an_apps_own_metrics_route_is_kept(lines, registry):
 
     brick_observe.flask.instrument(app, registry=registry)
     assert app.test_client().get("/metrics").data == b"mine"
+
+
+def test_the_start_up_banner_is_silenced(capsys):
+    import flask.cli
+    from prometheus_client import CollectorRegistry
+
+    brick_observe.flask.instrument(Flask("banner"), registry=CollectorRegistry())
+    flask.cli.show_server_banner(False, "banner")
+    assert capsys.readouterr().out == ""
